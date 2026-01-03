@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Millionaire YT UC Store</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg1:#07070b;
+      --bg2:#12001f;
+      --stroke: rgba(255,255,255,.12);
+      --text:#ffffff;
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.55);
+      --gold:#ffd700;
+      --orange:#ff6b35;
+      --mint:#00ff88;
+      --shadow: 0 24px 60px rgba(0,0,0,.55);
+      --radius: 20px;
+      --step-bg: url('bg1.jpg');
+
+      --simple-ui: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family:'Poppins',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% -10%, rgba(255,215,0,.18), transparent 55%),
+        radial-gradient(900px 600px at 85% 15%, rgba(255,107,53,.16), transparent 55%),
+        radial-gradient(900px 600px at 55% 110%, rgba(0,255,136,.10), transparent 55%),
+        linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      overflow-x:hidden;
+    }
+
+    .container{
+      max-width:430px;
+      margin:0 auto;
+      padding:18px;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .top-card{
+      border:1px solid var(--stroke);
+      background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      backdrop-filter: blur(18px);
+      border-radius: var(--radius);
+      padding:18px 16px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .top-card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 160px at 20% 0%, rgba(255,215,0,.20), transparent 60%),
+                  radial-gradient(600px 160px at 90% 15%, rgba(255,107,53,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .header{ text-align:center; position:relative; z-index:1; }
+    .logo{
+      font-family:'Orbitron',monospace;
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:.6px;
+      background: linear-gradient(45deg, var(--gold), var(--orange), var(--gold));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      text-shadow: 0 0 30px rgba(255,215,0,.12);
+    }
+    .tagline{ margin-top:6px; color:var(--muted); font-size:13px; font-weight:400; }
+
+    /* YouTube mention button (top) */
+    .yt-link{
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 10px 14px;
+      border-radius: 999px;
+
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.86);
+
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 13px;
+
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    }
+    .yt-link i{
+      color: #ff0000;
+      font-size: 16px;
+    }
+    .yt-link:active{ transform: scale(.99); }
+
+    .brand-logos{
+      margin-top:12px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    .brand-logo{
+      height:22px;
+      width:auto;
+      opacity:.92;
+      filter: drop-shadow(0 10px 25px rgba(0,0,0,.45));
+    }
+
+    .trust-strip{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:14px;
+      position:relative;
+      z-index:1;
+    }
+    .trust-pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.25);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .trust-pill i{ color: var(--mint); }
+
+    .progress-wrap{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      padding:14px 14px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+    }
+    .progress-container{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:relative;
+      gap:8px;
+    }
+    .progress-step{
+      width:34px;height:34px;border-radius:50%;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--stroke);
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;
+      transition: all .25s ease;
+      z-index:2;
+    }
+    .progress-step.active{
+      background: linear-gradient(45deg, var(--gold), var(--orange));
+      color:#100a00;border-color: transparent;
+      box-shadow: 0 0 0 6px rgba(255,215,0,.10), 0 14px 40px rgba(255,215,0,.18);
+    }
+    .progress-step.completed{
+      background: rgba(0,255,136,.90);
+      color:#001b10;border-color: transparent;
+    }
+    .progress-line{
+      height:2px;flex:1;
+      background: rgba(255,255,255,.12);
+      border-radius:99px;
+      z-index:1;
+      transition: all .25s ease;
+    }
+    .progress-line.active{
+      background: linear-gradient(90deg, var(--gold), var(--orange));
+      box-shadow: 0 0 18px rgba(255,215,0,.18);
+    }
+
+    .step{ display:none; animation: slideIn .35s ease; }
+    .step.active{ display:block; }
+    @keyframes slideIn{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .step-content{
+      border:1px solid var(--stroke);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      backdrop-filter: blur(18px);
+      border-radius: var(--radius);
+      padding:18px 16px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .step-content::before{
+      content:"";
+      position:absolute; inset:0;
+      background: var(--step-bg) center/cover no-repeat;
+      opacity:.22;
+      filter: saturate(1.1) contrast(1.05);
+      transform: scale(1.05);
+      z-index:0;
+    }
+    .step-content::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 520px at 20% 0%, rgba(0,180,255,.20), transparent 60%),
+                  linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.70));
+      z-index:0;
+    }
+    .step-content > *{ position:relative; z-index:1; }
+
+    .step-title{
+      font-family:'Orbitron',monospace;
+      font-size:20px;font-weight:800;
+      text-align:center;
+      margin-bottom:14px;
+      background: linear-gradient(45deg, var(--gold), var(--orange));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .subnote{
+      text-align:center;
+      color:var(--muted2);
+      font-size:12px;
+      margin-top:-6px;
+      margin-bottom:16px;
+    }
+
+    .packs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .pack-card{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:16px 12px;
+      text-align:center;
+      cursor:pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .pack-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(260px 120px at 20% 0%, rgba(255,215,0,.10), transparent 60%),
+                  radial-gradient(260px 120px at 95% 20%, rgba(255,107,53,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.0;
+      transition: opacity .2s ease;
+    }
+    .pack-card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,215,0,.45);
+      box-shadow: 0 18px 35px rgba(0,0,0,.35);
+    }
+    .pack-card:hover:before{ opacity:1; }
+    .pack-card.selected{
+      border-color: rgba(255,215,0,.75);
+      background: linear-gradient(135deg, rgba(255,215,0,.12), rgba(255,107,53,.10));
+      box-shadow: 0 18px 45px rgba(255,215,0,.12);
+      transform: translateY(-3px);
+    }
+
+    .pack-uc{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-family: var(--simple-ui);
+      font-size:16px;
+      font-weight:700;
+      color: rgba(255,255,255,.92);
+      margin-bottom:6px;
+      letter-spacing: .1px;
+    }
+    .uc-icon{
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.40));
+    }
+    .pack-price{
+      font-family: var(--simple-ui);
+      font-size:16px;
+      font-weight:800;
+      color: var(--gold);
+    }
+
+    .form-group{ margin-bottom:14px; }
+    .form-label{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-weight:600;margin-bottom:8px;
+      color: rgba(255,255,255,.85);
+      font-size:13px;
+    }
+    .form-input{
+      width:100%;
+      padding:14px 14px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      color:#fff;
+      font-size:15px;
+      transition: all .2s ease;
+      outline:none;
+    }
+    .form-input:focus{
+      border-color: rgba(255,215,0,.65);
+      box-shadow: 0 0 0 5px rgba(255,215,0,.12);
+      background: rgba(0,0,0,.28);
+    }
+    .form-input::placeholder{ color: rgba(255,255,255,.45); }
+
+    .payment-section{ text-align:center; }
+    .pay-box{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      border-radius:16px;
+      padding:14px 12px;
+      margin-bottom:14px;
+    }
+
+    .upi-id{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:14px;
+      font-weight:800;
+      color: var(--gold);
+      word-break: break-all;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding:10px 10px;
+      border-radius:12px;
+      margin:10px 0 0;
+      display:none;
+    }
+    .hint{ color: var(--muted2); font-size:12px; margin-top:8px; line-height:1.35; }
+
+    .file-upload-area{
+      border:2px dashed rgba(255,215,0,.65);
+      border-radius:16px;
+      padding:20px 14px;
+      text-align:center;
+      transition: all .2s ease;
+      cursor:pointer;
+      background: rgba(255,215,0,.07);
+      margin:14px 0 10px;
+    }
+    .file-upload-area:hover{
+      background: rgba(255,215,0,.12);
+      border-color: rgba(255,215,0,.95);
+    }
+    .file-upload-area.dragover{
+      border-color: rgba(0,255,136,.90);
+      background: rgba(0,255,136,.12);
+    }
+    #screenshotPreview{
+      max-width:100%;
+      max-height:210px;
+      border-radius:14px;
+      margin-top:12px;
+      display:none;
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .btn-row{ display:flex; gap:10px; }
+    .btn{
+      padding:14px 14px;
+      border:none;
+      border-radius:14px;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      width:100%;
+      user-select:none;
+    }
+    .btn-primary{
+      background: linear-gradient(45deg, var(--gold), var(--orange));
+      color:#130a00;
+      box-shadow: 0 18px 40px rgba(255,215,0,.18);
+    }
+    .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 22px 55px rgba(255,215,0,.25); }
+    .btn-secondary{
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .btn-secondary:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,215,0,.35); }
+    .btn:disabled{ opacity:.50; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
+
+    .success-screen{ text-align:center; padding:30px 10px 10px; }
+    .success-icon{
+      font-size:70px;
+      color: var(--mint);
+      margin-bottom:12px;
+      filter: drop-shadow(0 20px 40px rgba(0,255,136,.12));
+    }
+    .success-title{ font-size:22px; font-weight:900; margin-bottom:8px; color: var(--mint); }
+    .success-text{ color: var(--muted); font-size:14px; line-height:1.45; margin-bottom:16px; }
+
+    @media (max-width:480px){
+      .container{ padding:14px; }
+      .logo{ font-size:24px; }
+    }
+
+    .store-closed-overlay{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,.78);
+      backdrop-filter: blur(10px);
+    }
+    .store-closed-card{
+      width: min(420px, 100%);
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: 18px;
+      padding: 18px 16px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+      text-align: center;
+    }
+    .store-closed-title{
+      font-family: 'Orbitron', monospace;
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(45deg, var(--gold), var(--orange));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .store-closed-text{
+      margin-top: 8px;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="store-closed-overlay" id="storeClosedOverlay">
+    <div class="store-closed-card">
+      <div class="store-closed-title">Store Closed</div>
+      <div class="store-closed-text">
+        Closing time: 1:00 AM to 9:00 AM<br>
+        It will open after 9:00 AM. We'll start taking orders as soon as we open.
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="top-card">
+      <div class="header">
+        <h1 class="logo">Millionaire YT UC Store</h1>
+        <p class="tagline">Premium BGMI UC • Fast delivery experience</p>
+
+        <a class="yt-link" href="https://youtube.com/@millionaireyt6504" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i>
+          Visit our YouTube: @millionaireyt6504
+        </a>
+
+        <div class="brand-logos">
+          <img src="krafton.png" alt="KRAFTON logo" class="brand-logo">
+          <img src="bgmi.png" alt="BATTLEGROUNDS MOBILE INDIA logo" class="brand-logo">
+        </div>
+
+        <div class="trust-strip">
+          <div class="trust-pill"><i class="fa-solid fa-shield"></i><span>Secure UPI</span></div>
+          <div class="trust-pill"><i class="fa-solid fa-bolt"></i><span>Quick processing</span></div>
+          <div class="trust-pill"><i class="fa-solid fa-star"></i><span>Trusted by gamers</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-container">
+        <div class="progress-step active" data-step="1">1</div>
+        <div class="progress-line" id="line1"></div>
+        <div class="progress-step" data-step="2">2</div>
+        <div class="progress-line" id="line2"></div>
+        <div class="progress-step" data-step="3">3</div>
+        <div class="progress-line" id="line3"></div>
+        <div class="progress-step" data-step="4">4</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="step1" class="step active">
+      <div class="step-content">
+        <h2 class="step-title">Select UC Pack</h2>
+        <p class="subnote">Choose a pack to continue</p>
+
+        <div class="packs-grid" id="packsGrid">
+          <div class="pack-card" data-uc="60" data-price="40">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>60 UC</span></div>
+            <div class="pack-price">₹40</div>
+          </div>
+
+          <div class="pack-card" data-uc="325" data-price="220">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>325 UC</span></div>
+            <div class="pack-price">₹220</div>
+          </div>
+
+          <div class="pack-card" data-uc="3850" data-price="1540">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>3850 UC</span></div>
+            <div class="pack-price">₹1540</div>
+          </div>
+
+          <div class="pack-card" data-uc="8100" data-price="2430">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>8100 UC</span></div>
+            <div class="pack-price">₹2430</div>
+          </div>
+
+          <div class="pack-card" data-uc="16200" data-price="4100">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>16200 UC</span></div>
+            <div class="pack-price">₹4100</div>
+          </div>
+
+          <div class="pack-card" data-uc="32400" data-price="7800">
+            <div class="pack-uc"><img src="uc-logo.png" alt="UC" class="uc-icon"><span>32400 UC</span></div>
+            <div class="pack-price">₹7800</div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="next1" disabled>Continue</button>
+        <p class="hint">Tip: Double-check UC pack before continuing.</p>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" class="step">
+      <div class="step-content">
+        <h2 class="step-title">Enter Details</h2>
+        <p class="subnote">Details must be correct for smooth delivery</p>
+
+        <div class="form-group">
+          <label class="form-label">Selected Pack <span id="selectedPackDisplay" style="color:rgba(255,255,255,.75); font-weight:700;">-</span></label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">BGMI UID (10 digits)</label>
+          <input type="tel" class="form-input" id="uid" placeholder="1234567890" maxlength="10" inputmode="numeric">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">In-Game Name (IGN)</label>
+          <input type="text" class="form-input" id="ign" placeholder="Your IGN">
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" id="back2">Back</button>
+          <button type="button" class="btn btn-primary" id="next2" disabled>Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step3" class="step">
+      <div class="step-content">
+        <h2 class="step-title">Payment</h2>
+        <p class="subnote">Pay the exact amount via UPI</p>
+
+        <div class="pay-box payment-section">
+          <div style="color:rgba(255,255,255,.8); font-weight:800;">
+            Amount: <span id="paymentAmount" style="color:var(--gold);">₹0</span>
+          </div>
+
+          <div class="upi-id" id="upiId">millionaireytuc@ptaxis</div>
+
+          <a id="upiDeepLink"
+             class="btn btn-primary"
+             href="#"
+             style="display:none;margin-top:12px;text-align:center;text-decoration:none;">
+            Pay via UPI App
+          </a>
+
+          <button type="button" class="btn btn-secondary" id="copyUpiBtn" style="display:none;margin-top:10px;">
+            Copy UPI ID
+          </button>
+
+          <div id="paymentInstructions" style="display:none;text-align:left;margin-top:12px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:12px;border-radius:14px;">
+            <div style="font-weight:800;margin-bottom:8px;color:rgba(255,255,255,.9);">Payment Instructions</div>
+            <ol style="padding-left:18px;color:rgba(255,255,255,.75);font-size:12.5px;line-height:1.55;">
+              <li>Open any UPI app (PhonePe / Google Pay / Paytm / BHIM).</li>
+              <li>Tap “Pay via UPI App” (or copy UPI ID and pay manually).</li>
+              <li>Pay the exact amount shown above.</li>
+              <li>Take a screenshot after successful payment.</li>
+              <li>Upload the screenshot below and place your order.</li>
+            </ol>
+          </div>
+
+          <p class="hint" id="copyStatus" style="display:none;margin-top:8px;"></p>
+          <p class="hint">Use any UPI app. Keep a screenshot after payment.</p>
+        </div>
+
+        <form id="orderForm"
+              name="uc-order"
+              method="POST"
+              enctype="multipart/form-data"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field">
+
+          <input type="hidden" name="form-name" value="uc-order">
+          <p style="display:none;">
+            <label>Don’t fill this out: <input name="bot-field"></label>
+          </p>
+
+          <input type="hidden" name="pack_uc" id="pack_uc">
+          <input type="hidden" name="pack_price" id="pack_price">
+          <input type="hidden" name="bgmi_uid" id="bgmi_uid">
+          <input type="hidden" name="ign" id="ign_field">
+          <input type="hidden" name="time" id="time_field">
+          <input type="hidden" name="order_id" id="order_id_field">
+
+          <div class="file-upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt" style="font-size:44px; color:var(--gold); margin-bottom:10px;"></i>
+            <p style="font-weight:800;">Upload payment screenshot</p>
+            <p style="color:rgba(255,255,255,.6); font-size:12px; margin-top:4px;">JPG/PNG • Max 5MB</p>
+
+            <input type="file" id="screenshot" name="payment_screenshot" accept="image/*" style="display:none;">
+            <img id="screenshotPreview" alt="Preview">
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-secondary" id="back3">Back</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Place Order</button>
+          </div>
+
+          <div class="trust-strip" style="margin-top:12px;">
+            <div class="trust-pill"><i class="fa-solid fa-lock"></i><span>Privacy protected</span></div>
+            <div class="trust-pill"><i class="fa-solid fa-circle-check"></i><span>Order confirmation screen</span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="step4" class="step">
+      <div class="step-content success-screen">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h2 class="success-title">Order received</h2>
+        <p class="success-text">Thanks! The order has been placed successfully. Keep your payment screenshot safe until delivery is completed.</p>
+
+        <div style="margin-top:10px;">
+          <div style="font-weight:900;color:rgba(255,255,255,.92);">
+            Order ID: <span id="orderIdText" style="color:var(--gold);"></span>
+          </div>
+        </div>
+
+        <div class="order-summary" id="orderSummary"
+             style="margin-top:12px;text-align:left;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 12px;font-size:13px;background:rgba(0,0,0,.25);">
+        </div>
+
+        <div style="margin-top:10px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:12px;border-radius:14px;text-align:left;">
+          <div style="font-weight:800;margin-bottom:6px;">Expected delivery time</div>
+          <div style="color:rgba(255,255,255,.75);font-size:12.5px;line-height:1.55;">
+            Usually delivered within 5–10 minutes.
+          </div>
+        </div>
+
+        <div style="margin-top:12px;color:rgba(255,255,255,.75);font-size:12.5px;line-height:1.55;">
+          For updates and support content, visit:
+          <a href="https://youtube.com/@millionaireyt6504" target="_blank" style="color:var(--gold);font-weight:800;text-decoration:none;">
+            Millionaire YT (YouTube)
+          </a>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button type="button" class="btn btn-primary" onclick="location.reload()">New Order</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let selectedPack = null;
+    let screenshotFile = null;
+    let orderId = null;
+
+    function applyStepWallpaper(step){
+      const map = { 1: "bg1.jpg", 2: "bg2.jpg", 3: "bg3.jpg", 4: "bg4.jpg" };
+      document.documentElement.style.setProperty('--step-bg', `url('${map[step] || map[1]}')`);
+    }
+
+    function buildUpiDeepLink({ vpa, name, amount, note }) {
+      return `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&cu=INR&tn=${encodeURIComponent(note)}`;
+    }
+
+    function generateOrderId(){
+      return `MYT-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random()*900)}`;
+    }
+
+    applyStepWallpaper(1);
+    updateProgress();
+
+    // STEP 1: Pack selection
+    document.querySelectorAll('.pack-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedPack = { uc: this.dataset.uc, price: this.dataset.price };
+        document.getElementById('next1').disabled = false;
+      });
+    });
+
+    document.getElementById('next1').onclick = function() {
+      if (!selectedPack) return;
+      document.getElementById('selectedPackDisplay').textContent = `${selectedPack.uc} UC • ₹${selectedPack.price}`;
+      showStep(2);
+    };
+
+    // STEP 2 validation
+    document.getElementById('uid').oninput = validateStep2;
+    document.getElementById('ign').oninput = validateStep2;
+
+    function validateStep2() {
+      const uid = document.getElementById('uid').value;
+      const ign = document.getElementById('ign').value;
+      document.getElementById('next2').disabled = !(uid.length === 10 && ign.trim());
+    }
+
+    document.getElementById('next2').onclick = function() {
+      document.getElementById('paymentAmount').textContent = `₹${selectedPack.price}`;
+      document.getElementById('upiId').style.display = 'block';
+
+      document.getElementById('upiDeepLink').style.display = 'block';
+      document.getElementById('copyUpiBtn').style.display = 'block';
+      document.getElementById('paymentInstructions').style.display = 'block';
+
+      orderId = generateOrderId();
+
+      const vpa = document.getElementById('upiId').textContent.trim();
+      const payeeName = 'Millionaire YT UC Store';
+      const amount = selectedPack.price;
+      const uidVal = document.getElementById('uid').value.trim();
+      const ignVal = document.getElementById('ign').value.trim();
+      const note = `Order ${orderId} | ${selectedPack.uc} UC | UID ${uidVal} | IGN ${ignVal}`;
+
+      const deepLink = buildUpiDeepLink({ vpa, name: payeeName, amount, note });
+      document.getElementById('upiDeepLink').href = deepLink;
+
+      showStep(3);
+    };
+
+    // Back buttons
+    document.getElementById('back2').onclick = () => showStep(1);
+    document.getElementById('back3').onclick = () => showStep(2);
+
+    // File upload
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('screenshot');
+    const preview = document.getElementById('screenshotPreview');
+    const submitBtn = document.getElementById('submitBtn');
+
+    uploadArea.onclick = () => fileInput.click();
+    fileInput.onchange = handleFile;
+
+    ['dragenter','dragover','dragleave','drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e){ e.preventDefault(); e.stopPropagation(); }
+
+    ['dragenter','dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false);
+    });
+
+    ['dragleave','drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false);
+    });
+
+    uploadArea.ondrop = (e) => {
+      fileInput.files = e.dataTransfer.files;
+      handleFile({ target: fileInput });
+    };
+
+    function handleFile(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/') && file.size < 5 * 1024 * 1024) {
+        screenshotFile = file;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          preview.src = evt.target.result;
+          preview.style.display = 'block';
+          submitBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        screenshotFile = null;
+        preview.src = "";
+        preview.style.display = "none";
+        submitBtn.disabled = true;
+        alert("Only image files under 5MB allowed.");
+      }
+    }
+
+    // Copy UPI ID button
+    const copyBtn = document.getElementById('copyUpiBtn');
+    const copyStatus = document.getElementById('copyStatus');
+
+    copyBtn.addEventListener('click', async () => {
+      const vpa = document.getElementById('upiId').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(vpa);
+        copyStatus.style.display = 'block';
+        copyStatus.style.color = 'rgba(0,255,136,.85)';
+        copyStatus.textContent = 'UPI ID copied.';
+      } catch (e) {
+        copyStatus.style.display = 'block';
+        copyStatus.style.color = 'rgba(255,255,255,.75)';
+        copyStatus.textContent = 'Copy not allowed. Please copy manually.';
+      }
+    });
+
+    function fillOrderSummary() {
+      const orderIdEl = document.getElementById('orderIdText');
+      if (orderIdEl) orderIdEl.textContent = orderId || 'MYT-NA';
+
+      const box = document.getElementById('orderSummary');
+      if (!box) return;
+
+      const timeVal = document.getElementById('time_field').value;
+      const uidVal = document.getElementById('uid').value.trim();
+      const ignVal = document.getElementById('ign').value.trim();
+
+      box.innerHTML = `
+        <div style="font-weight:800;margin-bottom:6px;">Order Summary</div>
+        <div>Pack: ${selectedPack.uc} UC • ₹${selectedPack.price}</div>
+        <div>BGMI UID: ${uidVal}</div>
+        <div>IGN: ${ignVal}</div>
+        <div>Time: ${timeVal}</div>
+      `;
+    }
+
+    // Submit (AJAX) - single correct handler
+    const orderForm = document.getElementById('orderForm');
+    orderForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!selectedPack) return alert("Select a pack first.");
+      if (!screenshotFile) return alert("Upload payment screenshot.");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      document.getElementById('pack_uc').value = selectedPack.uc;
+      document.getElementById('pack_price').value = selectedPack.price;
+      document.getElementById('bgmi_uid').value = document.getElementById('uid').value.trim();
+      document.getElementById('ign_field').value = document.getElementById('ign').value.trim();
+      document.getElementById('time_field').value = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+      if (!orderId) orderId = generateOrderId();
+      document.getElementById('order_id_field').value = orderId;
+
+      const formData = new FormData(orderForm);
+
+      try {
+        const res = await fetch('/', { method: 'POST', body: formData });
+        if (res.ok) {
+          fillOrderSummary();
+          showStep(4);
+        } else {
+          alert("Submit failed. Please try again.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Place Order';
+        }
+      } catch (err) {
+        alert("Network error. Please try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Place Order';
+      }
+    });
+
+    function showStep(step) {
+      applyStepWallpaper(step);
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step${step}`).classList.add('active');
+      currentStep = step;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+      const steps = document.querySelectorAll('.progress-step');
+      const lines = [document.getElementById('line1'), document.getElementById('line2'), document.getElementById('line3')];
+
+      steps.forEach((stepEl, idx) => {
+        stepEl.classList.toggle('completed', idx < currentStep - 1);
+        stepEl.classList.toggle('active', idx === currentStep - 1);
+      });
+
+      lines.forEach((lineEl, idx) => {
+        lineEl.classList.toggle('active', idx < currentStep - 1);
+      });
+    }
+
+    /* ===== Store timing lock: OFF 1AM to 9AM (IST) ===== */
+    function getIndiaHour(){
+      const indiaStr = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const indiaDate = new Date(indiaStr);
+      return indiaDate.getHours();
+    }
+
+    function applyStoreTiming(){
+      const hour = getIndiaHour();
+      const isClosed = (hour >= 1 && hour < 9);
+
+      const overlay = document.getElementById('storeClosedOverlay');
+      overlay.style.display = isClosed ? 'flex' : 'none';
+
+      document.querySelectorAll('button, input, select, textarea, a').forEach(el => {
+        if (overlay.contains(el)) return;
+        if (el.tagName.toLowerCase() === 'a') {
+          el.style.pointerEvents = isClosed ? 'none' : 'auto';
+          el.style.opacity = isClosed ? '0.5' : '1';
+        } else {
+          el.disabled = isClosed;
+        }
+      });
+    }
+
+    applyStoreTiming();
+    setInterval(applyStoreTiming, 30000);
+  </script>
+</body>
+</html>
